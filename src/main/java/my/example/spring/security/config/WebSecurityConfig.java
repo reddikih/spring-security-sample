@@ -1,26 +1,46 @@
 package my.example.spring.security.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import my.example.spring.security.service.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
- * Created by satoshi on 2018/02/19.
+ * Created by satoshi on 2018/02/20.
  */
-@EnableWebSecurity
-public class WebSecurityConfig implements WebMvcConfigurer {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  /**
-   * UserDetailsService is just a DAO. Only manage user's data access.
-   */
-  @Bean
-  public UserDetailsService userDetailsService() throws Exception {
-    InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-    manager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
-    return manager;
+  @Autowired
+  private UserDetailsServiceImpl userService;
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+        .authorizeRequests()
+        .antMatchers("/css/**", "/fonts/**", "/js/**").permitAll()
+        .antMatchers("/admin/**").hasRole("ADMIN")
+        .anyRequest().authenticated()
+        .and()
+        .formLogin()
+        .loginPage("/login")
+        .usernameParameter("username")
+        .passwordParameter("password")
+        .permitAll()
+        .and()
+        .logout()
+        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+        .logoutSuccessUrl("/login")
+        .deleteCookies("JSESSIONID")
+        .invalidateHttpSession(true)
+        .permitAll();
+  }
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    // TODO
+    auth.userDetailsService(userService);
   }
 
 }
