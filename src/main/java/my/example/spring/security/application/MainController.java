@@ -28,14 +28,6 @@ public class MainController {
   @Autowired
   private UserDetailsServiceImpl userService;
 
-  @RequestMapping(path = "/", method = GET)
-  public String getIndex(Principal principal, Model model) {
-    Authentication authentication = (Authentication) principal;
-    UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-    model.addAttribute("user", user);
-    return "/index";
-  }
-
   @RequestMapping(path = "/foo", method = GET)
   public String getFoo() {
     return "Hello Foo\n";
@@ -46,18 +38,7 @@ public class MainController {
     return "Hello Bar\n";
   }
 
-  @RequestMapping(path = "/buzz", method = GET)
-  public String getBuzz() {
-    return "Hello Buzz\n";
-  }
-
   @RequestMapping(path = "/users", method = GET)
-  public Object getUser(Principal principal) {
-    Authentication authentication = (Authentication) principal;
-    return authentication.getPrincipal();
-  }
-
-  @RequestMapping(path = "/users/2", method = GET)
   public UserDetailsImpl getUser(@AuthenticationPrincipal UserDetailsImpl user) {
     return user;
   }
