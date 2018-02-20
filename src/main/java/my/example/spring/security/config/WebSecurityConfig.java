@@ -1,5 +1,7 @@
 package my.example.spring.security.config;
 
+import my.example.spring.security.service.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,8 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//  @Autowired
-//  private UserDetailsServiceImpl userService;
+  @Autowired
+  private UserDetailsServiceImpl userService;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -25,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .httpBasic()
         .and()
         .authorizeRequests()
-        .antMatchers("/css/**", "/fonts/**", "/js/**", "/foo").permitAll()
+        .antMatchers("/css/**", "/fonts/**", "/js/**", "/foo", "/register").permitAll()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .anyRequest().authenticated()
 //        .and()
@@ -47,15 +49,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     // TODO
-    auth.inMemoryAuthentication()
-        .withUser("test").password("password").roles("USER");
-    //auth.userDetailsService(userService);
+//    auth.inMemoryAuthentication()
+//        .withUser("test").password("password").roles("USER");
+    auth.userDetailsService(userService);
   }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+    return NoOpPasswordEncoder.getInstance();
+    //return new BCryptPasswordEncoder();
   }
-
 
 }

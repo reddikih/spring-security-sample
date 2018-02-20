@@ -25,8 +25,6 @@ public class UserDetailsImpl implements UserDetails {
   @Id
   @GeneratedValue
   private Long userId;
-
-  ;
   @Column(name = "user_name")
   private String username;
   @Column(name = "password")
@@ -44,6 +42,46 @@ public class UserDetailsImpl implements UserDetails {
     List<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority(authority.toString()));
     return authorities;
+  }
+
+  public Long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getOrbId() {
+    return orbId;
+  }
+
+  public void setOrbId(String orbId) {
+    this.orbId = orbId;
+  }
+
+  public Authority getAuthority() {
+    return authority;
+  }
+
+  public void setAuthority(Authority authority) {
+    this.authority = authority;
   }
 
   @Override
@@ -76,5 +114,4 @@ public class UserDetailsImpl implements UserDetails {
     return true;
   }
 
-  public enum Authority {ROLE_USER, ROLE_ADMIN, ROLE_MERCHANT}
 }
