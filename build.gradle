@@ -27,10 +27,15 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('mysql:mysql-connector-java')
+    // Do I needed?
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 
     // For Spring Security minimal
-    compile 'org.springframework.security:spring-security-web:5.0.1.RELEASE'
-    compile 'org.springframework.security:spring-security-config:5.0.1.RELEASE'
+    compile('org.springframework.boot:spring-boot-starter-security')
+    //compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
+    compile('org.springframework.boot:spring-boot-starter-security')
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
