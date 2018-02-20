@@ -34,7 +34,7 @@ dependencies {
 
     // For Spring Security minimal
     compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
+    //compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
