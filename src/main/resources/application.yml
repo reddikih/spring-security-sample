@@ -1,0 +1,23 @@
+spring:
+
+  server:
+    port: 18804
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/stest?createDatabaseIfNotExist=true
+    username: root
+    password: admin
+    driver-class-name: com.mysql.jdbc.Driver
+    platform: mysql
+
+  jpa:
+    # Database - data initialization
+    generate-ddl: false
+    # Show or not log for each sql query
+    show-sql: true
+    # Transactions
+    open-in-view: false
+    # Hibernate ddl auto (create, create-drop, update): with "update" the database
+    hibernate:
+      ddl-auto: create
+
