@@ -2,17 +2,13 @@ package my.example.spring.security.application;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.security.Principal;
 import my.example.spring.security.model.UserDetailsImpl;
-import my.example.spring.security.service.UserDetailsServiceImpl;
+import my.example.spring.security.model.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,9 +29,9 @@ public class MainController {
     return "Hello Foo\n";
   }
 
-  @RequestMapping(path = "/bar", method = GET)
-  public String getBar() {
-    return "Hello Bar\n";
+  @RequestMapping(path = "/login", method = GET)
+  public String login() {
+    return "Login succeeded\n";
   }
 
   @RequestMapping(path = "/users", method = GET)
