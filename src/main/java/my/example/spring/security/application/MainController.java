@@ -2,6 +2,7 @@ package my.example.spring.security.application;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,20 +32,26 @@ public class MainController {
         return "Hello Foo\n";
     }
 
-    @RequestMapping(path = "/login", method = GET)
-    public String login() {
-        return "Login succeeded\n";
+    @RequestMapping(path = "/login", method = POST, consumes = APPLICATION_JSON_VALUE)
+    public String login(@RequestBody LoginRequest req) {
+        return userService.authenticateUser(req.username, req.password);
     }
 
     @RequestMapping(path = "/users", method = GET)
     public MinimalProfile getUser(@AuthenticationPrincipal MinimalProfile user) {
-        LOGGER.warn("we made it here!!! {}", user);
+        LOGGER.warn("USER: we made it here!!! {}", user);
+        return user;
+    }
+
+    @RequestMapping(path = "/admin/users", method = GET)
+    public MinimalProfile getUserAdmin(@AuthenticationPrincipal MinimalProfile user) {
+        LOGGER.warn("ADMIN: we made it here!!! {}", user);
         return user;
     }
 
     // TODO The HttpSecurity is allow only GET method to permitAll().
     // TODO I should change the GET method to POST with permitAll()
-    @RequestMapping(path = "/register", method = GET, consumes = APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/register", method = POST, consumes = APPLICATION_JSON_VALUE)
     public void createUser(@RequestBody UserRequest req) {
         UserDetailsImpl user = new UserDetailsImpl();
         user.setUsername(req.username);

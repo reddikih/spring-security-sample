@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import my.example.spring.security.model.Authority;
+
 /**
  * Created by satoshi on 2018/02/20.
  */
@@ -24,12 +26,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-//      http.csrf().disable();
+      http.csrf().disable();
 
       http.authorizeRequests()
           .antMatchers("/css/**", "/fonts/**", "/js/**", "/foo", "/register", "/login").permitAll()
-          .antMatchers("/admin/**/*").hasAuthority("ROLE_ADMIN")
-          .antMatchers("/**/*").hasAuthority("ROLE_USER")
+          .antMatchers("/admin/**/*").hasAuthority(Authority.ROLE_ADMIN.toString())
+          .antMatchers("/**/*").hasAuthority(Authority.ROLE_USER.toString())
           .and()
           .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
           .exceptionHandling()

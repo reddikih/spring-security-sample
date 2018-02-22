@@ -1,4 +1,4 @@
-package my.example.spring.security.config;
+package my.example.spring.security.exception;
 
 public class AuthenticationTokenException extends RuntimeException {
     final private String string; 

@@ -16,36 +16,30 @@ public class AuthenticatedProfile implements Authentication {
 
     public AuthenticatedProfile(MinimalProfile minimalProfile) {
         this.minimalProfile = minimalProfile;
-        LOGGER.warn("authenticated: {}", minimalProfile.getUsername());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        LOGGER.warn("in: getAuthorities {}", minimalProfile.getAuthorities());
         return minimalProfile.getAuthorities();
     }
 
     @Override
     public Object getCredentials() {
-        LOGGER.warn("in: getCredentials");
         return null;
     }
 
     @Override
     public Object getDetails() {
-        LOGGER.warn("in: getDetails");
         return null;
     }
 
     @Override
     public Object getPrincipal() {
-        LOGGER.warn("in: getPrincipal");
         return minimalProfile;
     }
 
     @Override
     public boolean isAuthenticated() {
-        LOGGER.warn("in: isAuthenticated");
         return true;
     }
 
@@ -56,7 +50,6 @@ public class AuthenticatedProfile implements Authentication {
 
     @Override
     public String getName() {
-        LOGGER.warn("in: getName");
         return minimalProfile.getUsername();
     }
 }

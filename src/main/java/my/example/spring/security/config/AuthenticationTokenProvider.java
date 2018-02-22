@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import my.example.spring.security.exception.AuthenticationTokenException;
 import my.example.spring.security.model.MinimalProfile;
 import my.example.spring.security.model.UserDetailsServiceImpl;
 
