@@ -40,7 +40,7 @@ public class AuthenticatedProfile implements Authentication {
     @Override
     public Object getPrincipal() {
         LOGGER.warn("in: getPrincipal");
-        return null;
+        return minimalProfile;
     }
 
     @Override
