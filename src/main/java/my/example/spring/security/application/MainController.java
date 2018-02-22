@@ -2,6 +2,7 @@ package my.example.spring.security.application;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import my.example.spring.security.model.UserDetailsImpl;
 import my.example.spring.security.model.UserDetailsServiceImpl;
@@ -41,7 +42,8 @@ public class MainController {
 
   // TODO The HttpSecurity is allow only GET method to permitAll().
   // TODO I should change the GET method to POST with permitAll()
-  @RequestMapping(path = "/register", method = GET, consumes = APPLICATION_JSON_VALUE)
+  //@RequestMapping(path = "/register", method = GET, consumes = APPLICATION_JSON_VALUE)
+  @RequestMapping(path = "/register", method = POST, consumes = APPLICATION_JSON_VALUE)
   public void createUser(@RequestBody UserRequest req) {
     UserDetailsImpl user = new UserDetailsImpl();
     user.setUsername(req.username);

@@ -3,6 +3,7 @@ package my.example.spring.security.config;
 import my.example.spring.security.model.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,10 +23,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+        .csrf().disable() // TODO configure this except for testing
         .httpBasic()
         .and()
         .authorizeRequests()
-        .antMatchers("/css/**", "/fonts/**", "/js/**", "/foo", "/register").permitAll()
+        .antMatchers(HttpMethod.POST, "/register").permitAll()
+        .antMatchers("/css/**", "/fonts/**", "/js/**", "/foo").permitAll()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .anyRequest().authenticated()
 //        .and()
