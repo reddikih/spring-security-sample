@@ -1,14 +1,13 @@
 package my.example.spring.security.config;
 
-import my.example.spring.security.model.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import my.example.spring.security.model.Authority;
 
 /**
  * Created by satoshi on 2018/02/20.
@@ -17,45 +16,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
-  private UserDetailsServiceImpl userService;
-
+  private AuthenticationTokenProcessingFilter tokenFilter;
+  
+  @Autowired
+  private AuthenticationTokenProvider authTokenProvider;
+  
+  @Autowired
+  private AuthenticationTokenEntryPoint authTokenEndPoint;
+  
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http
-        .httpBasic()
-        .and()
-        .authorizeRequests()
-        .antMatchers("/css/**", "/fonts/**", "/js/**", "/foo", "/register").permitAll()
-        .antMatchers("/admin/**").hasRole("ADMIN")
-        .anyRequest().authenticated()
-//        .and()
-//        .formLogin()
-//        .loginPage("/login")
-//        .usernameParameter("username")
-//        .passwordParameter("password")
-//        .permitAll()
-//        .and()
-//        .logout()
-//        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//        .logoutSuccessUrl("/login")
-//        .deleteCookies("JSESSIONID")
-//        .invalidateHttpSession(true)
-//        .permitAll()
-    ;
-  }
+      http.csrf().disable();
+
+      http.authorizeRequests()
+          .antMatchers("/css/**", "/fonts/**", "/js/**", "/foo", "/register", "/login").permitAll()
+          .antMatchers("/admin/**/*").hasAuthority(Authority.ROLE_ADMIN.toString())
+          .antMatchers("/**/*").hasAuthority(Authority.ROLE_USER.toString())
+          .and()
+          .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
+          .exceptionHandling()
+          .authenticationEntryPoint(authTokenEndPoint);
+      }
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    // TODO
-//    auth.inMemoryAuthentication()
-//        .withUser("test").password("password").roles("USER");
-    auth.userDetailsService(userService);
-  }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return NoOpPasswordEncoder.getInstance(); // NoOpPasswordEncoder is deprecated
-    //return new BCryptPasswordEncoder();
+      auth.authenticationProvider(authTokenProvider);
   }
 
 }
